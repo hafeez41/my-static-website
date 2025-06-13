@@ -1,3 +1,12 @@
-# Ignore Terraform’s working directories wherever they live
-.terraform/
-devops-terraform/.terraform/
+# Terraform local state and cache
+terraform/.terraform/
+terraform/*.tfstate*
+terraform/.terraform.lock.hcl
+
+# IDE/editor files
+.vscode/
+*.swp
+
+# Logs, OS files
+*.log
+.DS_Store
