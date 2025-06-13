@@ -10,3 +10,6 @@ terraform/.terraform.lock.hcl
 # Logs, OS files
 *.log
 .DS_Store
+# Ignore Terraform’s working dir everywhere
+**/.terraform/
+**/*.tfstate*
