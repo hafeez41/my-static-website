@@ -20,6 +20,7 @@ pipeline {
         }
 
         stage('Build') {
+            
             steps {
                 echo 'Building static website (simple copy for static content)...'
                 // For a static website, "build" typically means ensuring all files are present
