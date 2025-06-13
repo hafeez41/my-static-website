@@ -14,13 +14,13 @@ pipeline {
             steps {
                 echo 'Checking out source code from GitHub...'
                 // Checkout the SCM. Uses the repository configured in the Jenkins job.
-                git branch: 'main', url: 'https://github.com/hafeez41/my-static-website.git'
+                git branch: 'main', url: 'https://github.com/hafeez41/my-static-website.git/'
                 // Replace YOUR_GITHUB_USERNAME and my-static-website with your actual GitHub details
             }
         }
 
         stage('Build') {
-            
+
             steps {
                 echo 'Building static website (simple copy for static content)...'
                 // For a static website, "build" typically means ensuring all files are present
