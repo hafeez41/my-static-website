@@ -1,2 +1,3 @@
-# Terraform local cache & plugins
+# Ignore Terraform’s working directories wherever they live
 .terraform/
+devops-terraform/.terraform/
