@@ -36,7 +36,7 @@ pipeline {
                 echo 'Running basic tests (e.g., HTML linting/validation placeholder)...'
                 // For a real project, you would integrate actual testing frameworks here:
                 sh 'pip install html5validator' // or pre-install on agent
-sh 'html5validator --root build/'
+                sh 'html5validator --root build/'
                 // - Basic content checks
                 // - If JavaScript, unit tests (e.g., 'npm test')
                 // For this tutorial, we'll use a placeholder.
