@@ -65,7 +65,6 @@ pipeline {
   }
 }
 
-
         stage('Deploy to S3') {
             steps {
                 echo "Deploying to S3 bucket: ${env.S3_BUCKET_NAME} in region ${env.AWS_REGION}..."
