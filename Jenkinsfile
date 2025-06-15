@@ -33,20 +33,18 @@ pipeline {
 
         stage('Test') {
   steps {
-    echo 'Setting up a virtualenv and running html5validator…'
+    echo 'Setting up virtualenv and validating HTML…'
     sh '''
-      # Install venv support if it’s not already present
-      sudo apt-get update
-      sudo apt-get install -y python3-venv
-
-      # Create & activate the virtualenv
+      # 1) Create a fresh virtual environment
       python3 -m venv venv
+
+      # 2) Activate it
       . venv/bin/activate
 
-      # Install html5validator into the venv
+      # 3) Install the HTML5 validator into the venv
       pip install html5validator
 
-      # Run the validator against your build directory
+      # 4) Run the validator against your build output
       html5validator --root build/ || exit 1
     '''
   }
