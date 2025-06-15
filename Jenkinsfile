@@ -32,22 +32,25 @@ pipeline {
 
 
         stage('Test') {
-            steps {
-                echo 'Running basic tests (e.g., HTML linting/validation placeholder)...'
-                // For a real project, you would integrate actual testing frameworks here:
-                 sh 'pip3 install --user html5validator'       // installs under /home/jenkins/.local/bin
-    sh 'export PATH=$HOME/.local/bin:$PATH'       // make sure Jenkins sees the binary
-    sh 'html5validator --root build/'   
-                // - Basic content checks
-                // - If JavaScript, unit tests (e.g., 'npm test')
-                // For this tutorial, we'll use a placeholder.
-                script {
-                    sh 'echo "Simulating tests... All tests passed!"'
-                    // Example of a simple check (e.g., verify index.html exists)
-                    sh '[ -f build/index.html ] || { echo "ERROR: index.html not found!"; exit 1; }'
-                }
-            }
-        }
+  steps {
+    echo 'Setting up a virtualenv and running html5validator…'
+    sh '''
+      # Install venv support if it’s not already present
+      sudo apt-get update
+      sudo apt-get install -y python3-venv
+
+      # Create & activate the virtualenv
+      python3 -m venv venv
+      . venv/bin/activate
+
+      # Install html5validator into the venv
+      pip install html5validator
+
+      # Run the validator against your build directory
+      html5validator --root build/ || exit 1
+    '''
+  }
+}
 
         stage('Deploy to S3') {
             steps {
