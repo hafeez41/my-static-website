@@ -31,25 +31,13 @@ pipeline {
 }
 
 
-        stage('Test') {
+       stage('Test') {
   steps {
-    echo 'Setting up virtualenv and validating HTML…'
-    sh '''
-      # 1) Create a fresh virtual environment
-      python3 -m venv venv
-
-      # 2) Activate it
-      . venv/bin/activate
-
-      # 3) Install the HTML5 validator into the venv
-      pip install html5validator
-
-      # 4) Run the validator against your build output
-      html5validator --root build/ || exit 1
-    '''
+    echo 'Validating HTML…'
+    // html5validator is already installed system-wide
+    sh 'html5validator --root build/ || exit 1'
   }
 }
-
         stage('Deploy to S3') {
             steps {
                 echo "Deploying to S3 bucket: ${env.S3_BUCKET_NAME} in region ${env.AWS_REGION}..."
