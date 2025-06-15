@@ -20,19 +20,17 @@ pipeline {
         }
 
         stage('Build') {
+  steps {
+    echo 'Building static website (simple copy for static content)...'
+    script {
+      sh 'mkdir -p build'                               // ensure build/ exists
+      sh 'cp -r website/. build/'                       // copy only your website assets
+      sh 'ls -l build'                                  // verify contents
+    }
+  }
+}
 
-            steps {
-                echo 'Building static website (simple copy for static content)...'
-                // For a static website, "build" typically means ensuring all files are present
-                // and correctly structured. No compilation step is usually needed.
-                // In a more complex scenario, this might involve npm build, webpack, etc.
-                script {
-                    sh 'mkdir -p build' // Create a directory for build artifacts
-                    sh 'cp -r ./* build/' // Copy all files to the build directory
-                    sh 'ls -l build' // List files in the build directory to verify
-                }
-            }
-        }
+
        stage('Test') {
   steps {
     echo 'Running basic static-site checks…'
@@ -64,6 +62,7 @@ pipeline {
     '''
   }
 }
+
 
         stage('Deploy to S3') {
             steps {
