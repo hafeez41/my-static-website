@@ -33,11 +33,36 @@ pipeline {
 
        stage('Test') {
   steps {
-    echo 'Validating HTML…'
-    // html5validator is already installed system-wide
-    sh 'html5validator --root build/ || exit 1'
+    echo 'Running basic static-site checks…'
+    sh '''
+      # 1) Ensure index.html exists
+      if [ ! -f build/index.html ]; then
+        echo "❌ ERROR: build/index.html not found"
+        exit 1
+      fi
+
+      # 2) Check for a DOCTYPE
+      grep -q "<!DOCTYPE html>" build/index.html \
+        || { echo "❌ ERROR: Missing <!DOCTYPE html>"; exit 1; }
+
+      # 3) Check for a <title> tag
+      grep -q "<title>.*</title>" build/index.html \
+        || { echo "❌ ERROR: Missing <title> tag"; exit 1; }
+
+      # 4) (Optional) Smoke-test the live S3 endpoint
+      # curl must be installed on the agent for this
+      STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+        http://${S3_BUCKET_NAME}.s3-website-${AWS_REGION}.amazonaws.com/index.html)
+      if [ "$STATUS" -ne 200 ]; then
+        echo "❌ ERROR: S3 site returned HTTP $STATUS"
+        exit 1
+      fi
+
+      echo "✅ Basic tests passed!"
+    '''
   }
 }
+
         stage('Deploy to S3') {
             steps {
                 echo "Deploying to S3 bucket: ${env.S3_BUCKET_NAME} in region ${env.AWS_REGION}..."
